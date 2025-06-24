@@ -1,17 +1,17 @@
 const { client } = require('../services/whatsappClient');
-const { MessageMedia, Buttons } = require('whatsapp-web.js');
+const { MessageMedia } = require('whatsapp-web.js');
 
 const sendMessage = async (req, res) => {
-    const { numero, mensaje } = req.body;
+    const { phone, message } = req.body;
 
-    if (!numero || !mensaje) {
+    if (!phone || !message) {
         return res.status(400).json({ error: 'Faltan parámetros: numero o mensaje' });
     }
 
-    const numeroConFormato = numero.includes('@c.us') ? numero : `${numero}@c.us`;
+    const numeroConFormato = phone.includes('@c.us') ? phone : `${phone}@c.us`;
 
     try {
-        const response = await client.sendMessage(numeroConFormato, mensaje, { Buttons: [{ buttonId: '1', type: 1, buttonText: 'Hola' }] } );
+        const response = await client.sendMessage(numeroConFormato, message);
         res.status(200).json({ success: true, messageId: response.id.id });
     } catch (error) {
         console.error('❌ Error al enviar mensaje:', error);
@@ -20,18 +20,18 @@ const sendMessage = async (req, res) => {
 };
 
 const sendMessageWithFile = async (req, res) => {
-    const { numero, mensaje, file, extFile } = req.body;
+    const { phone, message, file, extFile, fileName } = req.body;
     
-    if (!numero || !file || !extFile) {
+    if (!phone || !file || !extFile) {
         return res.status(400).json({ error: 'Faltan parámetros: numero o archivo' });
     }
 
-    const media = await new MessageMedia(extFile, file);
+    const media = await new MessageMedia(extFile, file, fileName);
 
-    const numeroConFormato = numero.includes('@c.us') ? numero : `${numero}@c.us`;
+    const numeroConFormato = phone.includes('@c.us') ? phone : `${phone}@c.us`;
 
     try {
-        const response = await client.sendMessage(numeroConFormato, media, { caption: mensaje });
+        const response = await client.sendMessage(numeroConFormato, media, { caption: message });
         res.status(200).json({ success: true, messageId: response.id.id });
     } catch (error) {
         console.error('❌ Error al enviar mensaje:', error);

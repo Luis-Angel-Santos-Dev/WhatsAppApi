@@ -1,5 +1,5 @@
 {
-  "name": "whatsapp-web.js-main",
+  "name": "whatsapp-api",
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
@@ -10,6 +10,7 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "dotenv": "^16.5.0",
     "express": "^5.1.0",
     "qrcode-terminal": "^0.12.0",
     "whatsapp-web.js": "^1.30.0"
