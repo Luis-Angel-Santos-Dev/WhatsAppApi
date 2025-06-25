@@ -8,7 +8,7 @@ function authMiddleware(req, res, next) {
     const token = authHeader; 
 
     if (token !== process.env.API_KEY) {
-        return res.status(403).json({ message: 'No tienes autorización para realizar esta acción' });
+        return res.status(401).json({ message: 'No tienes autorización para realizar esta acción' });
     }
 
     next(); 
